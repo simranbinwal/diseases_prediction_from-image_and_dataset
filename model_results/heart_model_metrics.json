@@ -1,0 +1,149 @@
+{
+  "logistic_regression": {
+    "accuracy": 0.7880794701986755,
+    "accuracy_std": 0.06568939032805975,
+    "fold_accuracies": [
+      0.819672131147541,
+      0.819672131147541,
+      0.6833333333333333,
+      0.7666666666666667,
+      0.85
+    ],
+    "precision": 0.7777777777777778,
+    "recall": 0.8536585365853658,
+    "f1": 0.813953488372093,
+    "confusion_matrix": [
+      [
+        98,
+        40
+      ],
+      [
+        24,
+        140
+      ]
+    ],
+    "labels": [
+      0,
+      1
+    ],
+    "roc_auc": 0.8610737834696168,
+    "evaluation_method": "nested stratified 5-fold CV on unique input profiles",
+    "unique_profiles": 302,
+    "raw_rows": 303,
+    "duplicate_profiles_removed": 1,
+    "best_parameters": {
+      "model__C": 0.1
+    }
+  },
+  "decision_tree": {
+    "accuracy": 0.7483443708609272,
+    "accuracy_std": 0.06069461659506128,
+    "fold_accuracies": [
+      0.7868852459016393,
+      0.8032786885245902,
+      0.65,
+      0.7333333333333333,
+      0.7666666666666667
+    ],
+    "precision": 0.7682926829268293,
+    "recall": 0.7682926829268293,
+    "f1": 0.7682926829268293,
+    "confusion_matrix": [
+      [
+        100,
+        38
+      ],
+      [
+        38,
+        126
+      ]
+    ],
+    "labels": [
+      0,
+      1
+    ],
+    "roc_auc": 0.7904060445727114,
+    "evaluation_method": "nested stratified 5-fold CV on unique input profiles",
+    "unique_profiles": 302,
+    "raw_rows": 303,
+    "duplicate_profiles_removed": 1,
+    "best_parameters": {
+      "max_depth": 2,
+      "min_samples_leaf": 4
+    }
+  },
+  "random_forest": {
+    "accuracy": 0.7748344370860927,
+    "accuracy_std": 0.08634303441220759,
+    "fold_accuracies": [
+      0.8360655737704918,
+      0.819672131147541,
+      0.6333333333333333,
+      0.75,
+      0.8333333333333334
+    ],
+    "precision": 0.7758620689655172,
+    "recall": 0.823170731707317,
+    "f1": 0.7988165680473372,
+    "confusion_matrix": [
+      [
+        99,
+        39
+      ],
+      [
+        29,
+        135
+      ]
+    ],
+    "labels": [
+      0,
+      1
+    ],
+    "roc_auc": 0.8511316037357703,
+    "evaluation_method": "nested stratified 5-fold CV on unique input profiles",
+    "unique_profiles": 302,
+    "raw_rows": 303,
+    "duplicate_profiles_removed": 1,
+    "best_parameters": {
+      "max_depth": 4,
+      "min_samples_leaf": 4
+    }
+  },
+  "svm": {
+    "accuracy": 0.7748344370860927,
+    "accuracy_std": 0.05384233172401449,
+    "fold_accuracies": [
+      0.8360655737704918,
+      0.7540983606557377,
+      0.7,
+      0.7666666666666667,
+      0.8166666666666667
+    ],
+    "precision": 0.7637362637362637,
+    "recall": 0.8475609756097561,
+    "f1": 0.8034682080924855,
+    "confusion_matrix": [
+      [
+        95,
+        43
+      ],
+      [
+        25,
+        139
+      ]
+    ],
+    "labels": [
+      0,
+      1
+    ],
+    "roc_auc": 0.8516840027256695,
+    "evaluation_method": "nested stratified 5-fold CV on unique input profiles",
+    "unique_profiles": 302,
+    "raw_rows": 303,
+    "duplicate_profiles_removed": 1,
+    "best_parameters": {
+      "model__C": 0.1,
+      "model__kernel": "linear"
+    }
+  }
+}

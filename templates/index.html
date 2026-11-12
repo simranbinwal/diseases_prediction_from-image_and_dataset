@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PulsePoint Health Risk Studio</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="page-shell">
+    <section class="hero-panel">
+      <p class="eyebrow">Smart preventive screening</p>
+      <h1>Multi-Disease Prediction Studio</h1>
+      <p class="hero-copy">
+        Explore heart, mental stress, and skin image screening in a calmer, clearer workspace built for quick data entry and readable results.
+      </p>
+
+      <div class="hero-stats">
+        <article class="stat-card">
+          <span class="stat-label">Current tracks</span>
+          <strong>Heart + Stress + Skin</strong>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Report export</span>
+          <strong>Instant PDF</strong>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Experience</span>
+          <strong>Mobile friendly</strong>
+        </article>
+      </div>
+
+      <div class="info-card">
+        <h2>How it works</h2>
+        <p>Enter your profile, choose a screening track, submit the relevant values or a skin image, and generate a shareable report once the prediction is ready.</p>
+        <ul class="feature-list">
+          <li>Clean field grouping for faster form completion</li>
+          <li>Clear result panel with state-aware styling</li>
+          <li>One-click PDF report download after prediction</li>
+          <li>Screening values and generated reports are saved in this app's local database</li>
+        </ul>
+      </div>
+      <div class="info-card guidance-card">
+        <h2>General health guidance</h2>
+        <p>Screening results do not diagnose disease or prescribe treatment. Use the suggested next steps to guide a conversation with a qualified professional; there is no guaranteed cure or substitute for individualized care.</p>
+      </div>
+    </section>
+
+    <section class="workspace-card">
+      <div class="workspace-header">
+        <div>
+          <p class="section-kicker">Prediction workspace</p>
+          <h2>Run a health screening</h2>
+        </div>
+        <p id="selectedTrack" class="track-pill">Choose a screening track to begin</p>
+      </div>
+
+      <div class="section user-grid">
+        <div class="input-group">
+          <label for="user_name">Patient name</label>
+          <input id="user_name" type="text" placeholder="Enter full name" autocomplete="name" maxlength="100">
+        </div>
+
+        <div class="input-group">
+          <label for="disease">Screening track</label>
+          <select id="disease" onchange="toggleForms()">
+            <option value="">Select a prediction model</option>
+            <option value="heart">Heart Disease</option>
+            <option value="stress">Mental Stress</option>
+            <option value="skin">Skin Disease (Image)</option>
+          </select>
+        </div>
+      </div>
+
+      <form id="heartForm" class="form-section" hidden>
+        <div class="form-heading">
+          <div>
+            <p class="form-tag">Track A</p>
+            <h3>Heart Disease Assessment</h3>
+          </div>
+        <p class="form-copy">Use the same numeric indicators as the heart screening dataset.</p>
+        </div>
+
+        <fieldset class="model-picker">
+          <legend>Select Machine Learning Model</legend>
+          <div class="model-options">
+            <label><input type="radio" name="heart_model" value="logistic_regression" checked><span>Logistic Regression</span></label>
+            <label><input type="radio" name="heart_model" value="decision_tree"><span>Decision Tree</span></label>
+            <label><input type="radio" name="heart_model" value="random_forest"><span>Random Forest</span></label>
+            <label><input type="radio" name="heart_model" value="svm"><span>SVM</span></label>
+          </div>
+        </fieldset>
+
+        <div class="field-grid">
+          <div class="input-group">
+            <label for="h_age">Age</label>
+            <input id="h_age" type="number" min="1" placeholder="Years">
+          </div>
+          <div class="input-group">
+            <label for="sex">Sex</label>
+            <input id="sex" type="number" min="0" max="1" placeholder="1 = Male, 0 = Female">
+          </div>
+          <div class="input-group">
+            <label for="cp">Chest pain type</label>
+            <input id="cp" type="number" min="0" placeholder="Numeric chest pain code">
+          </div>
+          <div class="input-group">
+            <label for="trestbps">Resting blood pressure</label>
+            <input id="trestbps" type="number" min="0" placeholder="mm Hg">
+          </div>
+          <div class="input-group">
+            <label for="chol">Cholesterol</label>
+            <input id="chol" type="number" min="0" placeholder="mg/dl">
+          </div>
+          <div class="input-group">
+            <label for="thalach">Max heart rate</label>
+            <input id="thalach" type="number" min="0" placeholder="Beats per minute">
+          </div>
+          <div class="input-group">
+            <label for="exang">Exercise induced angina</label>
+            <input id="exang" type="number" min="0" max="1" placeholder="1 = Yes, 0 = No">
+          </div>
+        </div>
+
+        <button type="submit">Predict Heart Risk</button>
+      </form>
+
+      <form id="stressForm" class="form-section" hidden>
+        <div class="form-heading">
+          <div>
+            <p class="form-tag">Track B</p>
+            <h3>Mental Stress Assessment</h3>
+          </div>
+          <p class="form-copy">Capture the sleep, activity, and heart rate fields used by the existing stress score model.</p>
+        </div>
+
+        <div class="field-grid">
+          <div class="input-group">
+            <label for="s_age">Age</label>
+            <input id="s_age" type="number" min="1" placeholder="Years">
+          </div>
+          <div class="input-group">
+            <label for="sleep_duration">Sleep duration</label>
+            <input id="sleep_duration" type="number" min="0" step="0.1" placeholder="Hours per night">
+          </div>
+          <div class="input-group">
+            <label for="sleep_quality">Sleep quality</label>
+            <input id="sleep_quality" type="number" min="0" max="10" step="0.1" placeholder="Scale of 0 to 10">
+          </div>
+          <div class="input-group">
+            <label for="activity">Physical activity level</label>
+            <input id="activity" type="number" min="0" step="1" placeholder="Use the dataset's activity units" required>
+          </div>
+          <div class="input-group">
+            <label for="heart_rate">Heart rate</label>
+            <input id="heart_rate" type="number" min="0" placeholder="Beats per minute">
+          </div>
+          <div class="input-group">
+            <label for="steps">Daily steps</label>
+            <input id="steps" type="number" min="0" placeholder="Total steps">
+          </div>
+        </div>
+
+        <fieldset class="model-picker">
+          <legend>Select Machine Learning Model</legend>
+          <div class="model-options">
+            <label><input type="radio" name="stress_model" value="logistic_regression"><span>Logistic Regression</span></label>
+            <label><input type="radio" name="stress_model" value="decision_tree"><span>Decision Tree</span></label>
+            <label><input type="radio" name="stress_model" value="random_forest" checked><span>Random Forest</span></label>
+            <label><input type="radio" name="stress_model" value="svm"><span>SVM</span></label>
+          </div>
+        </fieldset>
+
+        <button type="submit">Predict Stress Score</button>
+      </form>
+
+      <form id="skinForm" class="form-section" hidden>
+        <div class="form-heading">
+          <div>
+            <p class="form-tag">Track C</p>
+            <h3>Skin Image Screening</h3>
+          </div>
+          <p class="form-copy skin-intro">Upload a clear photo of the affected area. The model will compare it with the 22 categories in its dataset.</p>
+        </div>
+
+        <div class="skin-image-layout">
+          <div class="skin-upload-card">
+            <div class="skin-card-heading">
+              <span class="skin-step">01</span>
+              <div><h4>Choose an image</h4><p>Drop a photo here or browse your device</p></div>
+            </div>
+            <label id="skinDropzone" class="skin-dropzone" for="skin_image">
+              <input id="skin_image" class="skin-file-input" type="file" accept="image/jpeg,image/png,image/webp,image/bmp">
+              <span class="skin-upload-icon" aria-hidden="true">↑</span>
+              <span class="skin-drop-title">Click to choose a photo</span>
+              <span class="skin-drop-copy">or drag and drop it here</span>
+              <span class="skin-file-types">JPG, PNG, WebP or BMP <b>·</b> Up to 8 MB</span>
+            </label>
+            <div class="skin-photo-tips">
+              <span aria-hidden="true">✦</span>
+              <p>For a clearer result, use natural light, focus on the affected area, and avoid filters.</p>
+            </div>
+          </div>
+
+          <div class="skin-preview-card">
+            <div class="skin-card-heading">
+              <span class="skin-step">02</span>
+              <div><h4>Image preview</h4><p id="skinImageMeta">Your selected photo will appear here</p></div>
+              <button id="clearSkinImage" class="skin-clear-button" type="button" hidden>Remove</button>
+            </div>
+            <div class="skin-preview-stage">
+              <div id="skinPreviewPlaceholder" class="skin-preview-placeholder">
+                <span class="skin-preview-icon" aria-hidden="true">▧</span>
+                <strong>No image selected</strong>
+                <span>Preview appears here before analysis</span>
+              </div>
+              <img id="skinPreview" class="skin-preview" alt="Preview of the selected skin image" hidden>
+            </div>
+          </div>
+        </div>
+
+        <fieldset class="model-picker skin-model-picker">
+          <legend>03&nbsp; Choose a prediction model</legend>
+          <div class="model-options">
+            <label><input type="radio" name="skin_model" value="logistic_regression"><span>Logistic Regression</span></label>
+            <label><input type="radio" name="skin_model" value="custom_cnn"><span>Custom CNN</span></label>
+            <label><input type="radio" name="skin_model" value="mobilenet_v2"><span>MobileNetV2</span></label>
+            <label><input type="radio" name="skin_model" value="random_forest" checked><span>Random Forest</span></label>
+          </div>
+        </fieldset>
+
+        <button type="submit">Predict Skin Category</button>
+      </form>
+
+      <section class="result-panel section" id="result-section">
+        <div class="result-topline">
+          <div>
+            <p class="section-kicker">Prediction result</p>
+            <h3>Assessment summary</h3>
+          </div>
+          <span id="resultBadge" class="result-badge neutral">Waiting for input</span>
+        </div>
+
+        <p id="resultMessage" class="result-message">
+          Select a screening track and complete the form to see your prediction here.
+        </p>
+        <h3 id="output"></h3>
+        <p id="modelOutput" class="result-message" hidden></p>
+        <p id="probabilityOutput" class="result-message"></p>
+        <div id="recommendationPanel" class="recommendation-panel" hidden>
+          <h4>Suggested next steps</h4>
+          <ul id="recommendationList"></ul>
+          <p class="medical-note">General guidance only. It does not cure, diagnose, or replace professional medical care.</p>
+        </div>
+        <button id="downloadBtn" type="button" hidden>Download PDF Report</button>
+      </section>
+
+      <section class="performance-panel section" id="performance-panel">
+        <div class="form-heading"><div><p id="metricsKicker" class="section-kicker">Nested cross-validation</p><h3>Model Performance</h3></div><p id="metricsDescription" class="form-copy">Five-fold estimates on distinct input profiles, with tuning kept inside each training fold.</p></div>
+        <label class="performance-select" for="metricsDisease">Compare models for</label>
+        <select id="metricsDisease"><option value="skin" selected>Skin Disease (Image)</option><option value="stress">Mental Stress</option><option value="heart">Heart Disease</option></select>
+        <div class="table-wrap"><table><thead><tr><th>Algorithm</th><th id="accuracyHeading">CV accuracy (mean ± SD)</th><th>Precision</th><th>Recall</th><th>F1 Score</th></tr></thead><tbody id="metricsRows"></tbody></table></div>
+        <div class="chart-grid"><div><h4>Accuracy comparison</h4><div id="accuracyChart" class="metric-bars" role="img" aria-label="Accuracy comparison by algorithm"></div></div><div><h4>F1 score comparison</h4><div id="f1Chart" class="metric-bars" role="img" aria-label="F1 score comparison by algorithm"></div></div></div>
+        <div class="confusion-section"><label class="performance-select" for="confusionModel">Confusion matrix for</label><select id="confusionModel"><option value="logistic_regression">Logistic Regression</option><option value="decision_tree">Decision Tree</option><option value="random_forest">Random Forest</option><option value="svm">SVM</option></select><div id="confusionMatrix" class="confusion-matrix"></div></div>
+        <p id="metricsEmpty" class="result-message" hidden>No evaluation results are available yet. Run the model training scripts to create the comparison.</p>
+      </section>
+      <p class="disclaimer">Screening only: this system is not a replacement for professional medical diagnosis. Consult a qualified professional about symptoms or health concerns.</p>
+    </section>
+  </main>
+
+  <script>
+    const byId = id => document.getElementById(id);
+    const diseaseLabels = {
+      heart: "Heart Disease",
+      stress: "Mental Stress",
+      skin: "Skin Disease (Image)"
+    };
+
+    const trackCopy = {
+      heart: "Heart screening active",
+      stress: "Stress screening active",
+      skin: "Skin image screening active"
+    };
+
+    const elements = {
+      disease: byId("disease"),
+      userName: byId("user_name"),
+      heartForm: byId("heartForm"),
+      stressForm: byId("stressForm"),
+      skinForm: byId("skinForm"),
+      skinImage: byId("skin_image"),
+      skinPreview: byId("skinPreview"),
+      skinPreviewPlaceholder: byId("skinPreviewPlaceholder"),
+      skinImageMeta: byId("skinImageMeta"),
+      skinDropzone: byId("skinDropzone"),
+      clearSkinImage: byId("clearSkinImage"),
+      output: byId("output"),
+      modelOutput: byId("modelOutput"),
+      resultMessage: byId("resultMessage"),
+      resultBadge: byId("resultBadge"),
+      resultSection: byId("result-section"),
+      downloadBtn: byId("downloadBtn"),
+      probabilityOutput: byId("probabilityOutput"),
+      recommendationPanel: byId("recommendationPanel"),
+      recommendationList: byId("recommendationList"),
+      selectedTrack: byId("selectedTrack")
+    };
+
+    let reportData = {};
+
+    function resetResult() {
+      elements.output.innerText = "";
+      elements.modelOutput.innerText = "";
+      elements.modelOutput.hidden = true;
+      elements.probabilityOutput.innerText = "";
+      elements.recommendationPanel.hidden = true;
+      elements.resultMessage.innerText = "Complete the visible form and submit it to generate a prediction summary.";
+      elements.resultBadge.innerText = "Waiting for input";
+      elements.resultBadge.className = "result-badge neutral";
+      elements.downloadBtn.hidden = true;
+      elements.resultSection.classList.remove("ready", "high-risk", "low-risk", "stress-score", "skin-result");
+    }
+
+    function toggleForms() {
+      const selectedDisease = elements.disease.value;
+      const isHeart = selectedDisease === "heart";
+      const isStress = selectedDisease === "stress";
+      const isSkin = selectedDisease === "skin";
+
+      elements.heartForm.hidden = !isHeart;
+      elements.stressForm.hidden = !isStress;
+      elements.skinForm.hidden = !isSkin;
+      elements.heartForm.classList.toggle("visible", isHeart);
+      elements.stressForm.classList.toggle("visible", isStress);
+      elements.skinForm.classList.toggle("visible", isSkin);
+      elements.selectedTrack.innerText = trackCopy[selectedDisease] || "Choose a screening track to begin";
+
+      resetResult();
+    }
+
+    function validatePayload(payload) {
+      if (elements.userName.value.trim() === "") {
+        alert("Please enter the patient name.");
+        return false;
+      }
+
+      for (const key in payload) {
+        if (payload[key] === "") {
+          alert("Please fill all fields before predicting.");
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    function paintResult(data) {
+      const resultText = data.result;
+      const isSkin = data.disease === "skin";
+      const isHighRisk = resultText.includes("High Risk");
+      const isLowRisk = resultText.includes("Low Risk");
+      const isStressScore = resultText.includes("Stress Level Score");
+
+      elements.resultSection.classList.add("ready");
+
+      if (isSkin) {
+        elements.resultBadge.innerText = "Image screening complete";
+        elements.resultBadge.className = "result-badge info";
+        elements.resultMessage.innerText = "The image model selected the closest category it learned from the supplied dataset. This is a screening estimate only.";
+        elements.resultSection.classList.add("skin-result");
+      } else if (isHighRisk) {
+        elements.resultBadge.innerText = "Attention needed";
+        elements.resultBadge.className = "result-badge alert";
+        elements.resultMessage.innerText = "The model is flagging elevated heart-related risk indicators.";
+        elements.resultSection.classList.add("high-risk");
+      } else if (isLowRisk) {
+        elements.resultBadge.innerText = "Lower risk";
+        elements.resultBadge.className = "result-badge success";
+        elements.resultMessage.innerText = "The current inputs suggest a lower heart-related risk profile.";
+        elements.resultSection.classList.add("low-risk");
+      } else if (isStressScore) {
+        elements.resultBadge.innerText = "Stress score ready";
+        elements.resultBadge.className = "result-badge info";
+        elements.resultMessage.innerText = "Your stress screening score has been calculated from sleep and activity signals.";
+        elements.resultSection.classList.add("stress-score");
+      } else {
+        elements.resultBadge.innerText = "Result ready";
+        elements.resultBadge.className = "result-badge info";
+        elements.resultMessage.innerText = "Prediction completed successfully.";
+      }
+
+      elements.output.innerText = resultText;
+      elements.modelOutput.innerText = isSkin ? `Model used: ${data.model_label}` : "";
+      elements.modelOutput.hidden = !isSkin;
+      elements.probabilityOutput.innerText = data.probability === null || data.probability === undefined
+        ? "This model does not provide a probability estimate."
+        : `${data.probability_label}: ${(data.probability * 100).toFixed(1)}%`;
+      elements.recommendationList.replaceChildren(...(data.recommendations || []).map(item => {
+        const li = document.createElement("li"); li.innerText = item; return li;
+      }));
+      elements.recommendationPanel.hidden = false;
+      elements.downloadBtn.hidden = false;
+    }
+
+    async function send(payload, submitButton) {
+      if (!validatePayload(payload)) {
+        return;
+      }
+
+      const originalLabel = submitButton.innerText;
+      submitButton.disabled = true;
+      submitButton.innerText = "Analyzing...";
+      elements.resultBadge.innerText = "Running model";
+      elements.resultBadge.className = "result-badge info";
+      elements.resultMessage.innerText = "Please wait while the prediction is being generated.";
+      elements.output.innerText = "";
+      elements.modelOutput.innerText = "";
+      elements.modelOutput.hidden = true;
+      elements.downloadBtn.hidden = true;
+
+      try {
+        const response = await fetch("/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          const failure = await response.json().catch(() => ({}));
+          throw new Error(failure.error || "Prediction could not be completed. Please review your entries and try again.");
+        }
+
+        const data = await response.json();
+        reportData = {...reportData, ...data};
+        paintResult(data);
+      } catch (error) {
+        console.error(error);
+        elements.resultBadge.innerText = "Prediction failed";
+        elements.resultBadge.className = "result-badge alert";
+        elements.resultMessage.innerText = error.message;
+      } finally {
+        submitButton.disabled = false;
+        submitButton.innerText = originalLabel;
+      }
+    }
+
+    elements.heartForm.onsubmit = event => {
+      event.preventDefault();
+
+      const payload = {
+        disease: "heart",
+        name: elements.userName.value.trim(),
+        model: document.querySelector('input[name="heart_model"]:checked').value,
+        age: byId("h_age").value,
+        sex: byId("sex").value,
+        cp: byId("cp").value,
+        trestbps: byId("trestbps").value,
+        chol: byId("chol").value,
+        thalach: byId("thalach").value,
+        exang: byId("exang").value
+      };
+
+      reportData = {
+        name: elements.userName.value.trim(),
+        disease: diseaseLabels.heart,
+        inputs: payload
+      };
+
+      send(payload, event.submitter || elements.heartForm.querySelector("button"));
+    };
+
+    elements.stressForm.onsubmit = event => {
+      event.preventDefault();
+
+      const payload = {
+        disease: "stress",
+        name: elements.userName.value.trim(),
+        model: document.querySelector('input[name="stress_model"]:checked').value,
+        age: byId("s_age").value,
+        sleep_duration: byId("sleep_duration").value,
+        sleep_quality: byId("sleep_quality").value,
+        physical_activity: byId("activity").value,
+        heart_rate: byId("heart_rate").value,
+        steps: byId("steps").value
+      };
+
+      reportData = {
+        name: elements.userName.value.trim(),
+        disease: diseaseLabels.stress,
+        inputs: payload
+      };
+
+      send(payload, event.submitter || elements.stressForm.querySelector("button"));
+    };
+
+    function formatFileSize(bytes) {
+      return bytes < 1024 * 1024
+        ? `${Math.max(1, Math.round(bytes / 1024))} KB`
+        : `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+    }
+
+    function updateSkinImagePreview(file) {
+      const previousUrl = elements.skinPreview.dataset.objectUrl;
+      if (previousUrl) URL.revokeObjectURL(previousUrl);
+      delete elements.skinPreview.dataset.objectUrl;
+      if (!file) {
+        elements.skinImage.value = "";
+        elements.skinPreview.hidden = true;
+        elements.skinPreview.removeAttribute("src");
+        elements.skinPreviewPlaceholder.hidden = false;
+        elements.skinImageMeta.innerText = "Your selected photo will appear here";
+        elements.clearSkinImage.hidden = true;
+        elements.skinDropzone.classList.remove("has-image");
+        return;
+      }
+      const previewUrl = URL.createObjectURL(file);
+      elements.skinPreview.dataset.objectUrl = previewUrl;
+      elements.skinPreview.src = previewUrl;
+      elements.skinPreview.hidden = false;
+      elements.skinPreviewPlaceholder.hidden = true;
+      elements.skinImageMeta.innerText = `${file.name} · ${formatFileSize(file.size)}`;
+      elements.clearSkinImage.hidden = false;
+      elements.skinDropzone.classList.add("has-image");
+    }
+
+    elements.skinImage.addEventListener("change", () => updateSkinImagePreview(elements.skinImage.files[0]));
+    elements.clearSkinImage.addEventListener("click", () => updateSkinImagePreview(null));
+    ["dragenter", "dragover"].forEach(eventName => elements.skinDropzone.addEventListener(eventName, event => {
+      event.preventDefault();
+      elements.skinDropzone.classList.add("drag-over");
+    }));
+    ["dragleave", "dragend"].forEach(eventName => elements.skinDropzone.addEventListener(eventName, () => {
+      elements.skinDropzone.classList.remove("drag-over");
+    }));
+    elements.skinDropzone.addEventListener("drop", event => {
+      event.preventDefault();
+      elements.skinDropzone.classList.remove("drag-over");
+      const file = event.dataTransfer.files[0];
+      if (!file) return;
+      const transfer = new DataTransfer();
+      transfer.items.add(file);
+      elements.skinImage.files = transfer.files;
+      updateSkinImagePreview(file);
+    });
+
+    elements.skinForm.onsubmit = async event => {
+      event.preventDefault();
+      const image = elements.skinImage.files[0];
+      if (!elements.userName.value.trim()) {
+        alert("Please enter the patient name.");
+        return;
+      }
+      if (!image) {
+        alert("Choose a skin image before predicting.");
+        return;
+      }
+      if (image.size > 8 * 1024 * 1024) {
+        alert("The image must be 8 MB or smaller.");
+        return;
+      }
+
+      const payload = new FormData();
+      payload.append("disease", "skin");
+      payload.append("name", elements.userName.value.trim());
+      payload.append("model", document.querySelector('input[name="skin_model"]:checked').value);
+      payload.append("image", image);
+      const submitButton = event.submitter || elements.skinForm.querySelector("button");
+      const originalLabel = submitButton.innerText;
+      submitButton.disabled = true;
+      submitButton.innerText = "Analyzing image...";
+      elements.resultBadge.innerText = "Running model";
+      elements.resultBadge.className = "result-badge info";
+      elements.resultMessage.innerText = "Please wait while the image is processed.";
+      elements.output.innerText = "";
+      elements.modelOutput.innerText = "";
+      elements.modelOutput.hidden = true;
+      elements.downloadBtn.hidden = true;
+
+      try {
+        const response = await fetch("/predict", {method: "POST", body: payload});
+        if (!response.ok) {
+          const failure = await response.json().catch(() => ({}));
+          throw new Error(failure.error || "Image prediction could not be completed.");
+        }
+        const data = await response.json();
+        reportData = {...data};
+        paintResult(data);
+      } catch (error) {
+        console.error(error);
+        elements.resultBadge.innerText = "Prediction failed";
+        elements.resultBadge.className = "result-badge alert";
+        elements.resultMessage.innerText = error.message;
+      } finally {
+        submitButton.disabled = false;
+        submitButton.innerText = originalLabel;
+      }
+    };
+
+    elements.downloadBtn.onclick = async () => {
+      const originalLabel = elements.downloadBtn.innerText;
+      elements.downloadBtn.disabled = true;
+      elements.downloadBtn.innerText = "Preparing report...";
+      try {
+        const response = await fetch("/download-report", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({screening_id: reportData.screening_id})
+        });
+        if (!response.ok) {
+          const failure = await response.json().catch(() => ({}));
+          throw new Error(failure.error || "Report could not be created.");
+        }
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = "health_report.pdf";
+        anchor.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      } catch (error) {
+        elements.resultMessage.innerText = error.message;
+      } finally {
+        elements.downloadBtn.disabled = false;
+        elements.downloadBtn.innerText = originalLabel;
+      }
+    };
+
+    const metrics = {{ metrics|tojson }};
+    const modelLabels = {{ model_labels|tojson }};
+    const metricNamesByDisease = {
+      heart: ["logistic_regression", "decision_tree", "random_forest", "svm"],
+      stress: ["logistic_regression", "decision_tree", "random_forest", "svm"],
+      skin: ["logistic_regression", "custom_cnn", "mobilenet_v2", "random_forest"]
+    };
+    function showMetricBar(target, key, records, metricNames) {
+      target.replaceChildren();
+      for (const name of metricNames) {
+        const value = records[name]?.[key];
+        if (typeof value !== "number") continue;
+        const row = document.createElement("div"); row.className = "metric-bar-row";
+        const label = document.createElement("span"); label.innerText = modelLabels[name];
+        const track = document.createElement("div"); track.className = "metric-track";
+        const fill = document.createElement("div"); fill.className = "metric-fill"; fill.style.width = `${Math.max(0, Math.min(100, value * 100))}%`;
+        track.append(fill);
+        const valueLabel = document.createElement("strong"); valueLabel.innerText = `${(value * 100).toFixed(1)}%`;
+        row.append(label, track, valueLabel); target.append(row);
+      }
+    }
+    function renderMetrics() {
+      const disease = byId("metricsDisease").value;
+      const records = metrics[disease] || {};
+      const metricNames = metricNamesByDisease[disease] || metricNamesByDisease.heart;
+      const rows = byId("metricsRows"); rows.replaceChildren();
+      const summary = metricNames.map(name => records[name]).find(Boolean);
+      byId("metricsKicker").innerText = disease === "skin" ? "Held-out test evaluation" : "Nested cross-validation";
+      byId("accuracyHeading").innerText = disease === "skin"
+        ? "Held-out test accuracy"
+        : "CV accuracy (mean ± SD)";
+      byId("metricsDescription").innerText = summary
+        ? (summary.evaluation_method?.startsWith("official held-out test folder")
+          ? `Separate test folder: ${summary.test_images} images across ${summary.class_count} categories; trained on ${summary.train_images} images. Removed ${summary.test_duplicates_removed} duplicate test images and excluded ${summary.ambiguous_test_images_removed} test images with conflicting labels.`
+          : `Nested 5-fold validation on ${summary.unique_profiles} distinct profiles; ${summary.duplicate_profiles_removed} repeated profiles removed. Accuracy is the mean across test folds, with standard deviation shown.`)
+        : "Run the model training scripts to create cross-validation results.";
+      for (const name of metricNames) {
+        const item = records[name]; if (!item) continue;
+        const tr = document.createElement("tr");
+        const accuracyText = typeof item.accuracy_std === "number"
+          ? `${(item.accuracy * 100).toFixed(1)}% ± ${(item.accuracy_std * 100).toFixed(1)}%`
+          : `${(item.accuracy * 100).toFixed(1)}%`;
+        [modelLabels[name], accuracyText, ...["precision", "recall", "f1"].map(key => `${(item[key] * 100).toFixed(1)}%`)].forEach(value => { const td = document.createElement("td"); td.innerText = value; tr.append(td); });
+        rows.append(tr);
+      }
+      const empty = Object.keys(records).length === 0;
+      byId("metricsEmpty").hidden = !empty;
+      byId("metricsDisease").hidden = empty && Object.keys(metrics.heart || {}).length === 0 && Object.keys(metrics.stress || {}).length === 0 && Object.keys(metrics.skin || {}).length === 0;
+      showMetricBar(byId("accuracyChart"), "accuracy", records, metricNames);
+      showMetricBar(byId("f1Chart"), "f1", records, metricNames);
+      const confusionSelect = byId("confusionModel");
+      const previousSelection = confusionSelect.value;
+      confusionSelect.replaceChildren(...metricNames.map(name => {
+        const option = document.createElement("option");
+        option.value = name;
+        option.textContent = modelLabels[name];
+        return option;
+      }));
+      confusionSelect.value = metricNames.includes(previousSelection) ? previousSelection : metricNames[0];
+      renderConfusion(records);
+    }
+    function renderConfusion(records) {
+      const item = records[byId("confusionModel").value];
+      const root = byId("confusionMatrix"); root.replaceChildren();
+      if (!item?.confusion_matrix) return;
+      const table = document.createElement("table"); table.className = "confusion-table";
+      const header = document.createElement("tr"); header.append(document.createElement("th"));
+      item.labels.forEach(label => { const th = document.createElement("th"); th.innerText = `Predicted ${label}`; header.append(th); });
+      table.append(header);
+      item.confusion_matrix.forEach((matrixRow, rowIndex) => {
+        const tr = document.createElement("tr"); const label = document.createElement("th"); label.innerText = `Actual ${item.labels[rowIndex]}`; tr.append(label);
+        matrixRow.forEach((count, colIndex) => { const td = document.createElement("td"); td.innerText = count; td.style.backgroundColor = rowIndex === colIndex ? "rgba(15,157,143,.2)" : "rgba(86,112,133,.06)"; tr.append(td); });
+        table.append(tr);
+      });
+      root.append(table);
+    }
+    byId("metricsDisease").addEventListener("change", renderMetrics);
+    byId("confusionModel").addEventListener("change", () => renderConfusion(metrics[byId("metricsDisease").value] || {}));
+    renderMetrics();
+  </script>
+</body>
+</html>

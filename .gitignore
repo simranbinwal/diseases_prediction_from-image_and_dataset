@@ -1,0 +1,20 @@
+# Python environments and generated files
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Local screening records and generated reports
+instance/
+reports/*.pdf
+*.sqlite3
+
+# Health datasets and large image dataset; keep local until source and sharing terms are confirmed
+datasets/*.csv
+datasets/SkinDisease/
+
+# Cached pretrained weights
+models/.torch-cache/
